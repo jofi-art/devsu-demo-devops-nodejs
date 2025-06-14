@@ -148,12 +148,6 @@ jobs:
               with:
                 creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-            # Install kubectl
-            - name: Install kubectl
-              uses: azure/setup-kubectl@v1
-              with:
-                version: 'latest'
-
             # Setup Azure CLI and Get AKS credentials
             - name: Setup Azure CLI and Get AKS credentials
               run: |-
