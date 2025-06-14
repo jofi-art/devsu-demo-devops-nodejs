@@ -1,17 +1,21 @@
 name: Test, build and deploy Node.js app to AKS
 
+# This workflow is triggered on push to the main branch
 on:
     push:
         branches:
             - main
 
+# Environment variables for the workflow            
 env:
     RESOURCE-GROUP: 'rg-devsu-jofiart'
     AKS_CLUSTER-NAME: 'aks-devsu-jofiart'
     location: 'eastus'
     ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+# job definitions for the workflow    
 jobs:
+    # Unit tests, code coverage and static code analysis
     tests:
         runs-on: ubuntu-latest
         steps:
@@ -42,8 +46,9 @@ jobs:
             - name: NPM audit
               run: npm audit
               continue-on-error: true
-            
-    build-and-push-to-dockerhub:
+    
+    # Build the Docker image, run vulnerability scan and push to DockerHub          
+    build-and-push:
         runs-on: ubuntu-latest
         needs: tests
         steps:
@@ -80,9 +85,10 @@ jobs:
             - name: Push Docker image to DockerHub
               run: docker push jofiart/demo-devops-nodejs:latest
 
+    # Deploy the infrastructure using Terraform          
     infra-deploy:
         runs-on: ubuntu-latest
-        needs: build-and-push-to-dockerhub
+        needs: build-and-push
         steps:
             # Checkout the code
             - name: Checkout code
@@ -122,6 +128,7 @@ jobs:
                 name: terraform-state
                 path: ./terraform/terraform.tfstate
 
+    # Deploy the application to AKS using kubectl and the k8s manifests
     app-deploy:
         runs-on: ubuntu-latest
         needs: infra-deploy
@@ -151,7 +158,7 @@ jobs:
             # Deploy the application to AKS using kubectl apply with the k8s manifests
 
             - name: Deploy configMap
-              run: kubectl apply -f k8s/configmap.yaml
+              run: kubectl apply -f k8s/configmap.yamlr
 
             - name: Deploy secret
               run: kubectl apply -f k8s/secret.yaml
@@ -179,7 +186,8 @@ jobs:
                 kubectl get svc
                 kubectl get ingress
 
-    infra-cleanup-on-failure:
+    # Cleanup the infrastructure if the deployment fails
+    cleanup-on-failure:
         needs: app-deploy
         if: failure()
         runs-on: ubuntu-latest
