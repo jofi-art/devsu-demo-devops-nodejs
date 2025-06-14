@@ -43,7 +43,7 @@ jobs:
               run: npm audit
               continue-on-error: true
             
-    build:
+    build-and-push-to-dockerhub:
         runs-on: ubuntu-latest
         needs: test
         steps:
@@ -78,7 +78,7 @@ jobs:
 
     infra-deploy:
         runs-on: ubuntu-latest
-        needs: build
+        needs: build-and-push-to-dockerhub
         steps:
             # Checkout the code
             - name: Checkout code
@@ -113,7 +113,7 @@ jobs:
 
             # Save the Terraform state file as an artifact
             - name: Save Terraform state file
-              uses: actions/upload-artifact@v2
+              uses: actions/upload-artifact@v4
               with:
                 name: terraform-state
                 path: ./terraform/terraform.tfstate
