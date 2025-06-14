@@ -121,12 +121,18 @@ jobs:
               working-directory: ./terraform
               run: terraform apply -auto-approve
 
-            # Save the Terraform state file as an artifact
-            - name: Save Terraform state file
+            # Save the Terraform state file
+            - name: Save Terraform State
+              working-directory: ./terraform
+              run: tar -cvf terraform-state.tar .terraform terraform.tfstate
+      
+            # Upload the Terraform state file as an artifact  
+            - name: Upload Terraform State
               uses: actions/upload-artifact@v4
               with:
                 name: terraform-state
-                path: ./terraform/terraform.tfstate
+                path: ./terraform/terraform-state.tar  
+ 
 
     # Deploy the application to AKS using kubectl and the k8s manifests
     app-deploy:
