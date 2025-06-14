@@ -1,4 +1,4 @@
-# Usar imagen minimalista de Node.js
+# Use a minimal Node.js image
 FROM node:18.15.0-alpine
 
 # Create an unprivileged user
