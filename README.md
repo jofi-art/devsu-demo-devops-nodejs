@@ -133,10 +133,31 @@ This cleanup mechanism maintains **cloud hygiene, cost efficiency, and prevents 
 ---
 ## Kubernetes Deployment
 
-The application runs on AKS with:
-- **Ingress Controller:** Manages external access using TLS security.
-- **Load Balancing & Autoscaling:** Horizontal Pod Autoscaler ensures reliability.
-- **Configuration Management:** Secrets and ConfigMaps secure sensitive data.
+### 1️⃣ `configmap.yaml`
+- **Stores non-sensitive configuration values** required by the application.
+- Used to pass **environment variables** dynamically without modifying the container.
+
+### 2️⃣ `secret.yaml`
+- **Securely manages sensitive credentials** like API keys or database passwords.
+- Prevents hardcoding sensitive data in deployments.
+
+### 3️⃣ `service.yaml`
+- **Exposes the application within the cluster**, allowing pods to communicate internally.
+- Configured as a **LoadBalancer or ClusterIP** for routing incoming traffic.
+
+### 4️⃣ `deployment.yaml`
+- **Manages the application's workload**, ensuring pod replication and rolling updates.
+- Defines **resource requests and limits** for CPU and memory allocation.
+- Includes a **liveness probe** to monitor container health and restart it if necessary.
+
+### 5️⃣ `hpa.yaml`
+- Implements **Horizontal Pod Autoscaling (HPA)**.
+- Automatically **scales pods** based on CPU utilization thresholds.
+
+### 6️⃣ `ingress.yaml`
+- **Handles external traffic routing** for the application.
+- Defines **TLS termination** for secure HTTPS access.
+- Supports **domain-based routing** for structured ingress rules.
 
 ---
 
@@ -152,7 +173,3 @@ A document with the project's comments, architecture diagrams, and execution scr
 - GitHub: [jofi-art](https://github.com/jofi-art)
 - Email: [jofiel21-02@outlook.es](jofiel21-02@outlook.es)
 - LinkedIn: [Profile Link](https://www.linkedin.com/in/jofiel-arturo-salvador-contreras-813399148/?locale=en_US)
-
----
-
-This **README.md** now reflects a clean, professional structure while keeping essential details. Let me know if you need any further refinements! 🚀
