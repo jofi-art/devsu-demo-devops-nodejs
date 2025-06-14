@@ -78,7 +78,6 @@ To deploy and work with this project, ensure:
 - **Azure Subscription** is configured, and the Subscription ID is validated.
 - **Service Principal** is created in Microsoft Entra ID for authentication and access control.
 - **GitHub Secrets** are set up for Azure and Docker authentication.
-- **Docker & Kubernetes** are installed, with a local cluster like Minikube or Docker Desktop.
 
 ---
 
@@ -143,7 +142,7 @@ This cleanup mechanism maintains **cloud hygiene, cost efficiency, and prevents 
 
 ### 3️⃣ `service.yaml`
 - **Exposes the application within the cluster**, allowing pods to communicate internally.
-- Configured as a **LoadBalancer or ClusterIP** for routing incoming traffic.
+- Configured as a **LoadBalancer** for routing incoming traffic.
 
 ### 4️⃣ `deployment.yaml`
 - **Manages the application's workload**, ensuring pod replication and rolling updates.
@@ -156,7 +155,6 @@ This cleanup mechanism maintains **cloud hygiene, cost efficiency, and prevents 
 
 ### 6️⃣ `ingress.yaml`
 - **Handles external traffic routing** for the application.
-- Defines **TLS termination** for secure HTTPS access.
 - Supports **domain-based routing** for structured ingress rules.
 
 ---
