@@ -144,9 +144,25 @@ jobs:
                 az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
                 az aks get-credentials --resource-group ${{env.RESOURCE-GROUP}} --name ${{env.AKS_CLUSTER-NAME}}
 
-            # Deploy the application to AKS using kubectl apply
-            - name: Deploy application to AKS
-              run: kubectl apply -f k8s/
+            # Deploy the application to AKS using kubectl apply with the k8s manifests
+
+            - name: Deploy configMap
+              run: kubectl apply -f k8s/configmap.yaml
+
+            - name: Deploy secret
+              run: kubectl apply -f k8s/secret.yaml
+
+            - name: Deploy service
+              run: kubectl apply -f k8s/service.yaml
+
+            - name: Deploy deployment
+              run: kubectl apply -f k8s/deployment.yaml
+
+            - name: Deploy HPA
+              run: kubectl apply -f k8s/hpa.yaml
+
+            - name: Deploy ingress
+              run: kubectl apply -f k8s/ingress.yaml
 
             # Wait for the deployment to be ready
             - name: Wait for deployment to be ready
