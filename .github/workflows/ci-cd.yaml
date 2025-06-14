@@ -218,7 +218,7 @@ jobs:
             - name: Extract Terraform state file
               run: |-
                 tar -xvf terraform-state.tar
-                mv terraform.tfstate ./terraform
+                mv terraform.tfstate terraform/
 
             # Initialize Terraform
             - name: Terraform Init
