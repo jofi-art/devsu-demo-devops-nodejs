@@ -75,3 +75,45 @@ jobs:
             # Push the Docker image to DockerHub
             - name: Push Docker image to DockerHub
               run: docker push jofiart/demo-devops-nodejs:latest
+
+    infra-deploy:
+        runs-on: ubuntu-latest
+        needs: build
+        steps:
+            # Checkout the code
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            # Login to Azure
+            - name: Login to Azure
+              uses: azure/login@v1
+              with:
+                creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+            # Install Terraform
+            - name: Install Terraform
+              uses: hashicorp/setup-terraform@v1
+              with:
+                terraform_version: 1.5.7
+
+            # Initialize Terraform
+            - name: Terraform Init
+              working-directory: ./terraform
+              run: terraform init
+
+            # Plan Terraform deployment and save the plan to a file
+            - name: Terraform Plan
+              working-directory: ./terraform
+              run: terraform plan -output=tfplan
+
+            # Apply Terraform deployment
+            - name: Terraform Apply
+              working-directory: ./terraform
+              run: terraform apply -auto-approve
+
+            # Save the Terraform state file as an artifact
+            - name: Save Terraform state file
+              uses: actions/upload-artifact@v2
+              with:
+                name: terraform-state
+                path: ./terraform/terraform.tfstate
