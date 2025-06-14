@@ -13,7 +13,7 @@ env:
     location: 'eastus'
     ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-# job definitions for the workflow    
+# Job definitions for the workflow 
 jobs:
     # Unit tests, code coverage and static code analysis
     tests:
@@ -133,7 +133,6 @@ jobs:
                 name: terraform-state
                 path: ./terraform/terraform-state.tar  
  
-
     # Deploy the application to AKS using kubectl and the k8s manifests
     app-deploy:
         runs-on: ubuntu-latest
