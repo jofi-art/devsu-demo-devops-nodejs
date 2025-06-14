@@ -72,10 +72,6 @@ jobs:
                 username: ${{ secrets.DOCKERHUB_USERNAME }}
                 password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-            # Tag the Docker image
-            - name: Tag Docker image
-              run: docker tag demo-devops-nodejs:latest jofiart/demo-devops-nodejs:latest
-
             # Push the Docker image to DockerHub
             - name: Push Docker image to DockerHub
               run: docker push jofiart/demo-devops-nodejs:latest
