@@ -163,7 +163,7 @@ jobs:
             # Deploy the application to AKS using kubectl apply with the k8s manifests
 
             - name: Deploy configMap
-              run: kubectl apply -f k8s/configmap.yamlr
+              run: kubectl apply -f k8s/configmap.yaml
 
             - name: Deploy secret
               run: kubectl apply -f k8s/secret.yaml
