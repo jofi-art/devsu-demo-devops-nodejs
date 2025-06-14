@@ -104,7 +104,7 @@ jobs:
             # Plan Terraform deployment and save the plan to a file
             - name: Terraform Plan
               working-directory: ./terraform
-              run: terraform plan -output=tfplan
+              run: terraform plan -out=tfplan
 
             # Apply Terraform deployment
             - name: Terraform Apply
