@@ -1,0 +1,45 @@
+name: Test, build and deploy Node.js app to AKS
+
+on:
+    push:
+        branches:
+            - main
+
+env:
+    RESOURCE-GROUP: 'rg-devsu-jofiart'
+    AKS_CLUSTER-NAME: 'aks-devsu-jofiart'
+    location: 'eastus'
+    ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            # Checkout the code
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            # Install dependencies
+            - name: Install dependencies
+              run: npm i
+
+            # Run unit tests amd code coverage
+            - name: Unit testing and code coverage
+              run: |-
+                npm i jest
+                npm test
+                npm run coverage
+              continue-on-error: true
+
+            # Run static code analysis
+            - name: Static code analysis
+              run: |-
+                npm i eslint
+                npx eslint . --ext .js,.jsx,.ts,.tsx
+              continue-on-error: true
+            
+            # Adittional npm audit testing
+            - name: NPM audit
+              run: npm audit
+              continue-on-error: true
+            
