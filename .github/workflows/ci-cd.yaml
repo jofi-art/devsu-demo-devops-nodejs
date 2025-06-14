@@ -51,6 +51,10 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v2
 
+            # Install dependencies
+            - name: Install dependencies
+              run: npm i
+
             # Build the Docker image
             - name: Build Docker image
               run: docker build -t jofiart/demo-devops-nodejs:latest .
@@ -174,3 +178,46 @@ jobs:
                 kubectl get pods
                 kubectl get svc
                 kubectl get ingress
+
+    infra-cleanup-on-failure:
+        needs: infra-deploy
+        if: failure()
+        runs-on: ubuntu-latest
+        steps:
+            # Checkout the code
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            # Login to Azure
+            - name: Login to Azure
+              uses: azure/login@v1
+              with:
+                creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+            # Install Terraform
+            - name: Install Terraform
+              uses: hashicorp/setup-terraform@v1
+              with:
+                terraform_version: 1.5.7
+
+            # Download the Terraform state file artifact
+            - name: Download Terraform state file
+              uses: actions/download-artifact@v4
+              with:
+                name: terraform-state
+
+            # Extract the Terraform state file
+            - name: Extract Terraform state file
+              run: |-
+                tar -xvf terraform-state.tar
+                mv terraform.tfstate ./terraform
+
+            # Initialize Terraform
+            - name: Terraform Init
+              working-directory: ./terraform
+              run: terraform init
+
+            # Destroy Terraform deployment
+            - name: Terraform Destroy
+              working-directory: ./terraform
+              run: terraform destroy -auto-approve
