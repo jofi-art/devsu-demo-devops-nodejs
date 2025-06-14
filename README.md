@@ -56,7 +56,7 @@ The project consists of:
 - **GitHub Repository:** [jofi-art/devsu-demo-devops-nodejs](https://github.com/jofi-art/devsu-demo-devops-nodejs)
 - **Docker Image:** [jofiart/demo-devops-nodejs](https://hub.docker.com/r/jofiart/demo-devops-nodejs)
 - **Application Endpoint:** [http://app.demo-devopsdevsujofiart.online/api/users](http://app.demo-devopsdevsujofiart.online/api/users)
-- **CI/CD Pipeline Execution:** Refer to GitHub Actions logs.
+- **CI/CD Pipeline Execution:** [Workflow latest run](https://github.com/jofi-art/devsu-demo-devops-nodejs/actions/runs/15650672787)
 
 ---
 
