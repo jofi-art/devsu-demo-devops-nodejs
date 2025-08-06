@@ -158,11 +158,11 @@ jobs:
             - name: Install NGINX Ingress Controller
               run: |-
                 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
-                kubectl wait --namespace ingress-nginx \
+                kubectl wait --namespace default \
                   --for=condition=ready pod \
                   --selector=app.kubernetes.io/component=controller \
                   --timeout=120s
-                  
+
             # Deploy the application to AKS using kubectl apply with the k8s manifests
 
             - name: Deploy configMap
