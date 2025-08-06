@@ -1,7 +1,7 @@
 variable "resource_group" {
   description = "Resource Group name"
   type        = string
-  default     = "rg-devsu-jofiartt"
+  default     = "rg-devsu-jofiart"
 }
 
 variable "location" {
@@ -13,5 +13,5 @@ variable "location" {
 variable "aks_cluster_name" {
   description = "AKS Cluster name"
   type        = string
-  default     = "aks-devsu-jofiartt"
+  default     = "aks-devsu-jofiart"
 }
