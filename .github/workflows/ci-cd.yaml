@@ -153,7 +153,16 @@ jobs:
               run: |-
                 az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
                 az aks get-credentials --resource-group ${{env.RESOURCE-GROUP}} --name ${{env.AKS_CLUSTER-NAME}}
-
+            
+            # Install nginx ingress controller
+            - name: Install NGINX Ingress Controller
+              run: |-
+                kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+                kubectl wait --namespace ingress-nginx \
+                  --for=condition=ready pod \
+                  --selector=app.kubernetes.io/component=controller \
+                  --timeout=120s
+                  
             # Deploy the application to AKS using kubectl apply with the k8s manifests
 
             - name: Deploy configMap
