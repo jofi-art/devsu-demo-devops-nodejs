@@ -11,6 +11,7 @@ env:
     RESOURCE-GROUP: 'rg-devsu-jofiart'
     AKS_CLUSTER-NAME: 'aks-devsu-jofiart'
     location: 'eastus'
+    ENV_TYPE: production
     ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
 # Job definitions for the workflow 

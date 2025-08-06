@@ -1,25 +1,24 @@
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 3.0"
+    }
+  }
+
+  required_version = ">= 1.3.0"
+}
+
 provider "azurerm" {
   features {}
 }
 
-resource "azurerm_resource_group" "rg" {
-  name     = var.resource_group
-  location = var.location
-}
-
-resource "azurerm_kubernetes_cluster" "aks" {
-  name                = var.aks_cluster_name
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-  dns_prefix          = "aksdns"
-
-  default_node_pool {
-    name       = "default"
-    node_count = 2
-    vm_size    = "Standard_B2s"
-  }
-
-  identity {
-    type = "SystemAssigned"
-  }
+module "aks" {
+  source              = "./modules/aks"
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  aks_cluster_name    = var.aks_cluster_name
+  node_pool_name      = var.node_pool_name
+  node_count          = var.node_count
+  vm_size             = var.vm_size
 }
