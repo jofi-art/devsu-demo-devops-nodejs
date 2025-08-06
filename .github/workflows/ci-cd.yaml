@@ -154,22 +154,15 @@ jobs:
                 az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
                 az aks get-credentials --resource-group ${{env.RESOURCE-GROUP}} --name ${{env.AKS_CLUSTER-NAME}}
             
-            # Add the Helm chart for Nginx Ingress
+            # Install nginx ingress controller
             - name: Install NGINX Ingress Controller
               run: |-
                 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
                 helm repo update
+                helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
+                  --namespace ingress --create-namespace \
+                  --set controller.publishService.enabled=true
 
-            # Install nginx ingress controller
-            - name: Install NGINX Ingress Controller
-              run: |-
-                helm install app-ingress ingress-nginx/ingress-nginx \
-                  --namespace ingress \
-                  --create-namespace \
-                  --set controller.watchnamespace="" \
-                  --set controller.replicaCount=2 \
-                  --set controller.nodeSelector."kubernetes\.io/os"=linux \
-                  --set defaultBackend.nodeSelector."kubernetes\.io/os"=linux
 
              # Wait for the nginx ingress controller to be ready
             - name: Wait for nginx ingress controller to be ready
@@ -182,11 +175,11 @@ jobs:
             - name: Deploy secret
               run: kubectl apply -f k8s/secret.yaml
 
-            - name: Deploy service
-              run: kubectl apply -f k8s/service.yaml
-
             - name: Deploy deployment
               run: kubectl apply -f k8s/deployment.yaml
+
+            - name: Deploy service
+              run: kubectl apply -f k8s/service.yaml
 
             - name: Deploy HPA
               run: kubectl apply -f k8s/hpa.yaml
