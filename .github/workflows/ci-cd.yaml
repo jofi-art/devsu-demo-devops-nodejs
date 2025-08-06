@@ -8,8 +8,8 @@ on:
 
 # Environment variables for the workflow            
 env:
-    RESOURCE-GROUP: 'rg-devsu-jofiartt'
-    AKS_CLUSTER-NAME: 'aks-devsu-jofiartt'
+    RESOURCE-GROUP: 'rg-devsu-jofiart'
+    AKS_CLUSTER-NAME: 'aks-devsu-jofiart'
     location: 'eastus'
     ENV_TYPE: production
     DEPLOYMENT_NAME: demo-devops-nodejs 
