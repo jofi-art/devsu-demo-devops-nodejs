@@ -1,6 +1,7 @@
 variable "resource_group_name" {
   description = "Name of the resource group"
   type        = string
+  default     = "rg-devsu-jofiart" 
 }
 
 variable "location" {
@@ -12,6 +13,7 @@ variable "location" {
 variable "aks_cluster_name" {
   description = "Name of the AKS cluster"
   type        = string
+  default     = "aks-devsu-jofiart"
 }
 
 variable "node_pool_name" {
