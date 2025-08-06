@@ -11,10 +11,8 @@ spec:
   - host: app.demo-devopsdevsujofiart.online
     http:
       paths:
-      - path: /
-        pathType: Prefix
+      - pathType: Prefix
+        path: "/api/users/"
         backend:
-          service:
-            name: demo-devops-nodejs-service
-            port:
-              number: 80
+          servicename: demo-devops-nodejs-service
+          serviceport: 80
