@@ -47,15 +47,16 @@ The project consists of:
   - Unit Tests & Static Code Analysis (ESLint, Jest, NPM Audit)
   - Docker Image Build & Push to Docker Hub
   - Vulnerability Scanning (Trivy)
-  - Kubernetes Deployment to AKS
-  - Terraform Infrastructure Provisioning
+  - Kubernetes Deployment to AKS (Using Kustomize)
+  - Terraform Infrastructure Provisioning (Using an AKS module)
   - Cleanup on Failure (Terraform destroy)
 
 **Key Project Links:**
 
 - **GitHub Repository:** [jofi-art/devsu-demo-devops-nodejs](https://github.com/jofi-art/devsu-demo-devops-nodejs)
 - **Docker Image:** [jofiart/demo-devops-nodejs](https://hub.docker.com/r/jofiart/demo-devops-nodejs)
-- **CI/CD Pipeline Execution:** [Workflow latest run](https://github.com/jofi-art/devsu-demo-devops-nodejs/actions/runs/15650672787)
+- **CI/CD Pipeline Execution:** [Workflow latest run](https://github.com/jofi-art/devsu-demo-devops-nodejs/actions/runs/16790451363)
+- **Live Site:** [app.demo-devopsdevsujofiart.online](http://app.demo-devopsdevsujofiart.online/api/users)
 
 ---
 
@@ -97,12 +98,12 @@ The **GitHub Actions pipeline** automates critical DevOps processes, divided int
 
 ### 3️⃣ Infrastructure Deployment (Terraform)
 - Authenticates to Azure using GitHub Secrets.
-- Initializes Terraform, plans, and applies infrastructure provisioning.
+- Initializes Terraform, plans, and applies infrastructure provisioning using an AKS module to enable reusability.
 - Stores the Terraform state for rollback purposes.
 
 ### 4️⃣ Application Deployment to AKS
 - Retrieves AKS credentials.
-- Applies Kubernetes manifests (ConfigMaps, Secrets, Services, Deployment, HPA, Ingress).
+- Applies Kubernetes manifests (ConfigMaps, Secrets, Services, Deployment, HPA, Ingress) using Kustomize to be reausable across different environments.
 - Waits for successful rollout and verifies the deployment.
 
 ### 5️⃣ Cleanup on Failure (Rollback)
@@ -127,34 +128,6 @@ To ensure resource efficiency and prevent unnecessary costs, the pipeline includ
    - Executes `terraform destroy -auto-approve`, cleaning up all allocated cloud infrastructure.
 
 This cleanup mechanism maintains **cloud hygiene, cost efficiency, and prevents stale deployments from lingering**, ensuring that failed workflows do not impact future deployments.
-
----
-## Kubernetes Deployment
-
-### 1️⃣ `configmap.yaml`
-- **Stores non-sensitive configuration values** required by the application.
-- Used to pass **environment variables** dynamically without modifying the container.
-
-### 2️⃣ `secret.yaml`
-- **Securely manages sensitive credentials** like API keys or database passwords.
-- Prevents hardcoding sensitive data in deployments.
-
-### 3️⃣ `service.yaml`
-- **Exposes the application within the cluster**, allowing pods to communicate internally.
-- Configured as a **LoadBalancer** for routing incoming traffic.
-
-### 4️⃣ `deployment.yaml`
-- **Manages the application's workload**, ensuring pod replication and rolling updates.
-- Defines **resource requests and limits** for CPU and memory allocation.
-- Includes a **liveness probe** to monitor container health and restart it if necessary.
-
-### 5️⃣ `hpa.yaml`
-- Implements **Horizontal Pod Autoscaling (HPA)**.
-- Automatically **scales pods** based on CPU utilization thresholds.
-
-### 6️⃣ `ingress.yaml`
-- **Handles external traffic routing** for the application.
-- Supports **domain-based routing** for structured ingress rules.
 
 ---
 
