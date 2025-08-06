@@ -157,7 +157,7 @@ jobs:
                 az aks get-credentials --resource-group ${{env.RESOURCE-GROUP}} --name ${{env.AKS_CLUSTER-NAME}}
 
             # Deploy the application to AKS using kubectl apply with the k8s manifests
-            - name: Deploy configMap
+            - name: Deploy k8s
               run: |-
                 kubectl apply -k k8s/${{ env.ENV_TYPE }}
                 kubectl rollout status deployment/${{ env.DEPLOYMENT_NAME }} -n ${{ env.ENV_TYPE }}
