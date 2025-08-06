@@ -4,10 +4,10 @@ metadata:
   name: demo-devops-nodejs-ingress
 spec:
   rules:
-  - host: app.demo-devopsdevsujofiart.online
+  - host: "app.demo-devopsdevsujofiart.online"
     http:
       paths:
-      - path: /
+      - path: "/api/users/"
         pathType: Prefix
         backend:
           service:
