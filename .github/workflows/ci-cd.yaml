@@ -157,17 +157,17 @@ jobs:
             # Add the Helm chart for Nginx Ingress
             - name: Install NGINX Ingress Controller
               run: |-
-                helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx `
+                helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx \
                 helm repo update
 
             # Install nginx ingress controller
             - name: Install NGINX Ingress Controller
               run: |-
-                helm install app-ingress ingress-nginx/ingress-nginx `
-                  --namespace ingress `
-                  --create-namespace `
-                  --set controller.replicaCount=2 `
-                  --set controller.nodeSelector."kubernetes\.io/os"=linux `
+                helm install app-ingress ingress-nginx/ingress-nginx \
+                  --namespace ingress \
+                  --create-namespace \
+                  --set controller.replicaCount=2 \
+                  --set controller.nodeSelector."kubernetes\.io/os"=linux \
                   --set defaultBackend.nodeSelector."kubernetes\.io/os"=linux
 
             # Deploy the application to AKS using kubectl apply with the k8s manifests
