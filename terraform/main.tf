@@ -20,7 +20,7 @@ resource "azurerm_resource_group" "rg" {
 
 module "aks" {
   source              = "./modules/aks"
-  resource_group_name = var.resource_group_name
+  resource_group_name = azurerm_resource_group.rg.name
   location            = var.location
   aks_cluster_name    = var.aks_cluster_name
   node_pool_name      = var.node_pool_name
