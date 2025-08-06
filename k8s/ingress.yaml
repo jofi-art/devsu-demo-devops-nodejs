@@ -14,5 +14,7 @@ spec:
       - pathType: Prefix
         path: "/api/users/"
         backend:
-          servicename: demo-devops-nodejs-service
-          serviceport: 80
+          service:
+            name: demo-devops-nodejs-service
+            port:
+              number: 80
