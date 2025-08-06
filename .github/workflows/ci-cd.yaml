@@ -8,8 +8,8 @@ on:
 
 # Environment variables for the workflow            
 env:
-    RESOURCE-GROUP: 'rg-devsu-jofiart'
-    AKS_CLUSTER-NAME: 'aks-devsu-jofiart'
+    RESOURCE-GROUP: 'rg-devsu-jofiartt'
+    AKS_CLUSTER-NAME: 'aks-devsu-jofiartt'
     location: 'eastus'
     ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
@@ -154,22 +154,10 @@ jobs:
                 az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
                 az aks get-credentials --resource-group ${{env.RESOURCE-GROUP}} --name ${{env.AKS_CLUSTER-NAME}}
             
-            # Add the Helm chart for Nginx Ingress
-            - name: Install NGINX Ingress Controller
-              run: |-
-                helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-                helm repo update
-
+                
             # Install nginx ingress controller
             - name: Install NGINX Ingress Controller
-              run: |-
-                helm install app-ingress ingress-nginx/ingress-nginx \
-                  --namespace ingress \
-                  --create-namespace \
-                  --set controller.watchnamespace="" \
-                  --set controller.replicaCount=2 \
-                  --set controller.nodeSelector."kubernetes\.io/os"=linux \
-                  --set defaultBackend.nodeSelector."kubernetes\.io/os"=linux
+              run: kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.3.0/deploy/static/provider/cloud/deploy.yaml
 
             # Deploy the application to AKS using kubectl apply with the k8s manifests
             - name: Deploy configMap
