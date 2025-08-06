@@ -9,7 +9,7 @@ spec:
     http:
       paths:
       - pathType: Prefix
-        path: "/api/users/"
+        path: /
         backend:
           service:
             name: demo-devops-nodejs-service
