@@ -12,6 +12,7 @@ env:
     AKS_CLUSTER-NAME: 'aks-devsu-jofiart'
     location: 'eastus'
     ENV_TYPE: production
+    DEPLOYMENT_NAME: demo-devops-nodejs 
     ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
 # Job definitions for the workflow 
@@ -157,26 +158,9 @@ jobs:
 
             # Deploy the application to AKS using kubectl apply with the k8s manifests
             - name: Deploy configMap
-              run: kubectl apply -f k8s/configmap.yaml
-
-            - name: Deploy secret
-              run: kubectl apply -f k8s/secret.yaml
-
-            - name: Deploy deployment
-              run: kubectl apply -f k8s/deployment.yaml
-
-            - name: Deploy service
-              run: kubectl apply -f k8s/service.yaml
-
-            - name: Deploy HPA
-              run: kubectl apply -f k8s/hpa.yaml
-
-            - name: Deploy ingress
-              run: kubectl apply -f k8s/ingress.yaml
-
-            # Wait for the deployment to be ready
-            - name: Wait for deployment to be ready
-              run: kubectl rollout status deployment/demo-devops-nodejs
+              run: |-
+                kubectl apply -k k8s/${{ env.ENV_TYPE }}
+                kubectl rollout status deployment/${{ env.DEPLOYMENT_NAME }} -n ${{ env.ENV_TYPE }}
 
             # Verify the deployment
             - name: Verify deployment
